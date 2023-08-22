@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, charset=UTF-8">
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  body {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    background-color: #f7f7f7;
+  }
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  .floating-symbol {
+    position: absolute;
+    font-size: 20px;
+    pointer-events: none;
+    animation: fall linear infinite;
+  }
+  @keyframes fall {
+    0% {
+      transform: translateX(calc(100vw * var(--x)));
+      top: -20px;
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(calc(100vw * var(--x))) translateY(100vh) rotate(720deg);
+      top: 100vh;
+      opacity: 0;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="floating-symbols"></div> <!-- 这个容器用来装漂浮物 -->
+  <img id="image" src="../image/1.jpg">
+  <script>
+    const totalImages = 3;
+    let currentImageIndex = 1;
+    const imageElement = document.getElementById('image');
+    const floatingSymbolsContainer = document.getElementById('floating-symbols');
+    const symbols = ['⭐', '🌹', '💘', '🎈', '🍬'];
+    const totalSymbols = 50; // 漂浮物的数量
+
+    for (let i = 0; i < totalSymbols; i++) {
+      const symbol = document.createElement('div');
+      symbol.classList.add('floating-symbol');
+      symbol.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      symbol.style.setProperty('--x', Math.random());
+      symbol.style.animationDuration = `${Math.random() * 3 + 5}s`; // 随机下落时间
+      floatingSymbolsContainer.appendChild(symbol);
+    }
+
+    function changeImage() {
+      currentImageIndex = (currentImageIndex % totalImages) + 1;
+      imageElement.src = `../image/${currentImageIndex}.jpg`;
+    }
+
+    // Call the changeImage function every 5 seconds
+    setInterval(changeImage, 5000);
+  </script>
+</body>
+</html>
